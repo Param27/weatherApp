@@ -62,7 +62,7 @@ public class AddLocationActivity extends AppCompatActivity {
                 }
                 // add this to the database
                 int numOfLocationsStored = databaseQuery.countAllStoredLocations();
-                Toast.makeText(AddLocationActivity.this, "Total count " + numOfLocationsStored, Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddLocationActivity.this, "Total count " + numOfLocationsStored, Toast.LENGTH_LONG).show();
                 if(numOfLocationsStored <= 3){
                     databaseQuery.insertNewLocation(enteredLocation);
                 }else{

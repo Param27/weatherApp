@@ -60,7 +60,7 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
     private RecyclerViewAdapter recyclerViewAdapter;
     private TextView cityCountry;
     private TextView currentDate;
-    private ImageView weatherImage;
+    private ImageView weatherImage, refreshImage;
     private CircleView circleTitle;
     private TextView windResult;
     private TextView humidityResult;
@@ -90,6 +90,7 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
         isLocationSaved = sharedPreference.getLocationInPreference();
         cityCountry = (TextView)findViewById(R.id.city_country);
         currentDate = (TextView)findViewById(R.id.current_date);
+        refreshImage = (ImageView)findViewById(R.id.refresh_icon);
         weatherImage = (ImageView)findViewById(R.id.weather_icon);
         circleTitle = (CircleView)findViewById(R.id.weather_result);
         windResult = (TextView)findViewById(R.id.wind_result);
@@ -131,6 +132,23 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
         recyclerView = (RecyclerView)findViewById(R.id.weather_daily_list);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
+        refreshImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    // make API call with city name
+                    String storedCityName = sharedPreference.getLocationInPreference();
+                    //String storedCityName = "Enugu";
+                    System.out.println("Stored city " + storedCityName);
+                    String[] city = storedCityName.split(",");
+                    if(!TextUtils.isEmpty(city[0])){
+                        System.out.println("Stored city " + city[0]);
+                        String url ="http://api.openweathermap.org/data/2.5/weather?q="+city[0]+"&APPID=55e1ef2356c6e8084635491b939c5ec8&units=metric";
+                        makeJsonObject(url);
+
+                }
+            }
+        });
     }
     private void makeJsonObject(final String apiUrl){
         StringRequest stringRequest = new StringRequest(Request.Method.GET, apiUrl, new Response.Listener<String>() {

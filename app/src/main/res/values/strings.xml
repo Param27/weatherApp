@@ -18,7 +18,8 @@
         <string name="location_hints">Type city or postcode</string>
         <string name="location_example">Example Malmo, Sweden</string>
         <string name="add_new_location">Add new location</string>
-        <string name="stored_location">You can only store 5 locations</string>
+
+        <string name="stored_location">You can only store 4 locations</string>
         <string name="permission_notice">This permission is important but you can as well set your location on Location page</string>
         <string name="go_to_location">Go to location setting</string>
 <string name="delete_text">"X"</string>

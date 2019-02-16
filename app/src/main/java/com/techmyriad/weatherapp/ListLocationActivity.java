@@ -54,7 +54,7 @@ public class ListLocationActivity extends AppCompatActivity {
                 requestJsonObject(allLocations.get(i));
             }
         }
-        Toast.makeText(ListLocationActivity.this, "Count number of locations " + allLocations.size(), Toast.LENGTH_LONG).show();
+       // Toast.makeText(ListLocationActivity.this, "Count number of locations " + allLocations.size(), Toast.LENGTH_LONG).show();
         ImageButton addLocation = (ImageButton) findViewById(R.id.add_location);
         addLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,5 +96,10 @@ public class ListLocationActivity extends AppCompatActivity {
         });
         queue.add(stringRequest);
     }
-
+   /* @Override
+    public void onBackPressed()
+    {
+        onBackPressed();
+        finish();
+    }*/
 }
