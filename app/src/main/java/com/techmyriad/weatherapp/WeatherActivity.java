@@ -60,7 +60,7 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
     private RecyclerViewAdapter recyclerViewAdapter;
     private TextView cityCountry;
     private TextView currentDate;
-    private ImageView weatherImage, refreshImage;
+    private ImageView weatherImage, currentLoc;
     private CircleView circleTitle;
     private TextView windResult;
     private TextView humidityResult;
@@ -90,7 +90,7 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
         isLocationSaved = sharedPreference.getLocationInPreference();
         cityCountry = (TextView)findViewById(R.id.city_country);
         currentDate = (TextView)findViewById(R.id.current_date);
-        refreshImage = (ImageView)findViewById(R.id.refresh_icon);
+        currentLoc = (ImageView)findViewById(R.id.refresh_icon);
         weatherImage = (ImageView)findViewById(R.id.weather_icon);
         circleTitle = (CircleView)findViewById(R.id.weather_result);
         windResult = (TextView)findViewById(R.id.wind_result);
@@ -132,22 +132,21 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
         recyclerView = (RecyclerView)findViewById(R.id.weather_daily_list);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
-        refreshImage.setOnClickListener(new View.OnClickListener() {
+        currentLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                    // make API call with city name
-                    String storedCityName = sharedPreference.getLocationInPreference();
-                    //String storedCityName = "Enugu";
-                    System.out.println("Stored city " + storedCityName);
-                    String[] city = storedCityName.split(",");
-                    if(!TextUtils.isEmpty(city[0])){
-                        System.out.println("Stored city " + city[0]);
-                        String url ="http://api.openweathermap.org/data/2.5/weather?q="+city[0]+"&APPID=55e1ef2356c6e8084635491b939c5ec8&units=metric";
-                        makeJsonObject(url);
-
+                if (ActivityCompat.checkSelfPermission(WeatherActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(WeatherActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(WeatherActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+                } else {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 2, WeatherActivity.this);
+                    if (locationManager != null) {
+                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        apiUrl = "http://api.openweathermap.org/data/2.5/weather?lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&APPID=" + "55e1ef2356c6e8084635491b939c5ec8" + "&units=metric";
+                        makeJsonObject(apiUrl);
+                    }
                 }
-            }
+                }
+
         });
     }
     private void makeJsonObject(final String apiUrl){

@@ -2,12 +2,12 @@ package com.techmyriad.weatherapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -47,6 +47,17 @@ public class ListLocationActivity extends AppCompatActivity {
         allData = new ArrayList<LocationObject>();
         query = new DatabaseQuery(ListLocationActivity.this);
         allLocations = query.getStoredDataLocations();
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setImageResource(R.mipmap.refresh_w);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent=new Intent(ListLocationActivity.this, WeatherActivity.class);
+                startActivity(intent);
+                    }
+        });
+
         if(null != allLocations){
             for(int i = 0; i < allLocations.size(); i++){
                 // make volley network call here
@@ -55,14 +66,7 @@ public class ListLocationActivity extends AppCompatActivity {
             }
         }
        // Toast.makeText(ListLocationActivity.this, "Count number of locations " + allLocations.size(), Toast.LENGTH_LONG).show();
-        ImageButton addLocation = (ImageButton) findViewById(R.id.add_location);
-        addLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent addLocationIntent = new Intent(ListLocationActivity.this, AddLocationActivity.class);
-                startActivity(addLocationIntent);
-            }
-        });
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ListLocationActivity.this);
         locationRecyclerView = (RecyclerView) findViewById(R.id.location_list);
         locationRecyclerView.setLayoutManager(linearLayoutManager);

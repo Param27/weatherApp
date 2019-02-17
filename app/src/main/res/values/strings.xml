@@ -4,7 +4,7 @@
     <string name="title_activity_add_loaction">AddLoactionActivity</string>
     <string name="title_activity_list_location">ListLocationActivity</string>
     <string name="title_activity_weather">WeatherActivity</string>
-
+    <string name="message">Select a location and click on refresh button to view the weather of selected location.</string>
         <string name="city_country">Enugu, Nigeria</string>
         <string name="date_today">Friday, 8 July</string>
         <string name="current_temperature">26</string>
