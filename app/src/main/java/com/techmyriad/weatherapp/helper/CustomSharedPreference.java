@@ -12,6 +12,7 @@ import java.util.List;
 public class CustomSharedPreference {
     private SharedPreferences sharedPref;
     private Gson gson;
+    String lattitude, longitude;
     public CustomSharedPreference(Context context) {
         sharedPref = context.getSharedPreferences(Helper.PREFS_TAG, Context.MODE_PRIVATE);
         gson = new Gson();
@@ -36,5 +37,17 @@ public class CustomSharedPreference {
     }
     public String getLocationInPreference(){
         return sharedPref.getString(Helper.LOCATION_PREFS, "");
+    }
+    public void setLatitudeInPref(Long lat){
+        sharedPref.edit().putLong(lattitude, lat).apply();
+    }
+    public String getLatitudeFromPref(){
+        return sharedPref.getString(lattitude, "");
+    }
+    public void setLongitudeInPref(Long lon){
+        sharedPref.edit().putLong(longitude, lon).apply();
+    }
+    public String getLongitudeFromPref(){
+        return sharedPref.getString(longitude, "");
     }
 }

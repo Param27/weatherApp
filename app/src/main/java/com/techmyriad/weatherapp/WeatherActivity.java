@@ -1,6 +1,7 @@
 package com.techmyriad.weatherapp;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -150,9 +151,16 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
         });
     }
     private void makeJsonObject(final String apiUrl){
+        final ProgressDialog pDialog = new ProgressDialog(WeatherActivity.this);
+        pDialog.setMessage("Loading...");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, apiUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                pDialog.dismiss();
+
                 Log.d(TAG, "Response " + response);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
@@ -182,6 +190,7 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
                     fiveDaysApiJsonObjectCall(locationMapObject.getName());
                 }
             }
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -189,6 +198,7 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
             }
         });
         queue.add(stringRequest);
+
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -263,7 +273,6 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
                 if (null == forecast) {
                     Toast.makeText(getApplicationContext(), "Nothing was returned", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Response Good", Toast.LENGTH_LONG).show();
                     int[] everyday = new int[]{0,0,0,0,0,0,0};
                     List<FiveWeathers> weatherInfo = forecast.getList();
                     for(int i = 0; i < weatherInfo.size(); i++){
